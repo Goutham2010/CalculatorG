@@ -15,6 +15,16 @@
   <script>
     const canvas = document.getElementById("gameCanvas");
     const context = canvas.getContext("2d");
+    let playerX = 0;
+    let playerY = 0;
+    function gameLoop() {
+  update();
+  render();
+  requestAnimationFrame(gameLoop);
+}
+
+// Start the game loop
+gameLoop();
     document.addEventListener("keydown", handleKeyDown);
     function handleKeyDown(event) {
 
@@ -23,5 +33,78 @@
     vehicle.accelerate();
   }
 }
+      const vehicle = {
+  x: 0, // Initial X position
+  y: 0, // Initial Y position
+  velocityX: 0, // Initial X velocity
+  velocityY: 0, // Initial Y velocity
+  accelerationX: 0, // X acceleration
+  accelerationY: 0, // Y acceleration
+  mass: 1, // Mass of the vehicle
+};
+function update() {
+  // Calculate the new velocity based on acceleration
+  vehicle.velocityX += vehicle.accelerationX;
+  vehicle.velocityY += vehicle.accelerationY;
+
+  // Calculate the new position based on velocity
+  vehicle.x += vehicle.velocityX;
+  vehicle.y += vehicle.velocityY;
+}
+function handleKeyDown(event) {
+  if (event.key === "ArrowUp") {
+    // Apply acceleration when the up arrow key is pressed
+    vehicle.accelerationY = -0.2; // Negative value for upward acceleration
+  }
+}
+
+function handleKeyUp(event) {
+  if (event.key === "ArrowUp") {
+    // Stop applying acceleration when the up arrow key is released
+    vehicle.accelerationY = 0;
+  }
+}
+const friction = 0.1; // Coefficient of friction
+
+function applyFriction() {
+  // Calculate the friction force based on the velocity
+  const frictionX = -vehicle.velocityX * friction;
+  const frictionY = -vehicle.velocityY * friction;
+
+  // Apply the friction force to the acceleration
+  vehicle.accelerationX += frictionX;
+  vehicle.accelerationY += frictionY;
+}
+function checkCollisions() {
+  // Check for collision between the vehicle and each terrain obstacle
+  for (const obstacle of terrainObstacles) {
+    if (isColliding(vehicle, obstacle)) {
+      // Handle collision between the vehicle and the obstacle
+      handleCollision(vehicle, obstacle);
+    }
+  }
+}
+
+function isColliding(object1, object2) {
+  // Perform bounding box collision detection
+  // Compare the coordinates of the object's bounding boxes
+  return (
+    object1.x < object2.x + object2.width &&
+    object1.x + object1.width > object2.x &&
+    object1.y < object2.y + object2.height &&
+    object1.y + object1.height > object2.y
+  );
+}
+function handleCollision(vehicle, obstacle) {
+  // Reduce the vehicle's health
+  vehicle.health -= obstacle.damage;
+
+  // Apply a force to push the vehicle away from the obstacle
+  const pushForceX = obstacle.forceX;
+  const pushForceY = obstacle.forceY;
+  vehicle.velocityX += pushForceX;
+  vehicle.velocityY += pushForceY;
+}
+
   </script>
 </html>
