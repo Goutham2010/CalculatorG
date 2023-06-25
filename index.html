@@ -105,6 +105,47 @@ function handleCollision(vehicle, obstacle) {
   vehicle.velocityX += pushForceX;
   vehicle.velocityY += pushForceY;
 }
+// Define terrain properties
+const terrainWidth = 800; // Width of the terrain in pixels
+const terrainHeight = 600; // Height of the terrain in pixels
+const complexity = 0.02; // Complexity of the rocky terrain
+
+// Generate rocky terrain data
+function generateTerrainData() {
+  const terrainData = [];
+
+  // Generate terrain height for each x-coordinate
+  for (let x = 0; x < terrainWidth; x++) {
+    const noise = (1 + Math.sin(x * complexity)) / 2; // Adjust complexity of the rocky terrain
+    const height = Math.floor(noise * terrainHeight);
+    terrainData.push(height);
+  }
+
+  return terrainData;
+}
+
+// Render the rocky terrain
+function renderTerrain(context, terrainData) {
+  context.fillStyle = "#8b6d5b"; // Set the color of the rocks
+
+  // Render each column of the terrain
+  for (let x = 0; x < terrainData.length; x++) {
+    const height = terrainData[x];
+
+    // Draw rectangles for the rocky terrain
+    context.fillRect(x, terrainHeight - height, 1, height);
+  }
+}
+
+// Usage example
+const canvas = document.getElementById("gameCanvas");
+const context = canvas.getContext("2d");
+
+// Generate the rocky terrain data
+const terrainData = generateTerrainData();
+
+// Render the rocky terrain
+renderTerrain(context, terrainData);
 
   </script>
 </html>
