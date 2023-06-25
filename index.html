@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CalculatorG</title>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="input-field">
+        <div class="buttons">
+            <button onclick="addToExpression('7')">7</button>
+            <button onclick="addToExpression('8')">8</button>
+            <button onclick="addToExpression('9')">9</button>
+            <button onclick="addToExpression('/')">/</button>
+            <button onclick="addToExpression('4')">4</button>
+            <button onclick="addToExpression('5')">5</button>
+            <button onclick="addToExpression('6')">6</button>
+            <button onclick="addToExpression('*')">*</button>
+            <button onclick="addToExpression('1')">1</button>
+            <button onclick="addToExpression('2')">2</button>
+            <button onclick="addToExpression('3')">3</button>
+            <button onclick="addToExpression('-')">-</button>
+            <button onclick="addToExpression('0')">0</button>
+            <button onclick="addToExpression('.')">.</button>
+            <button onclick="evaluateExpression()">=</button>
+            <button onclick="addToExpression('+')">+</button>
+            <button onclick="clearInput()">C</button>
+        </div>
+    </div>
+  <style>
+    .calculator {
+    width: 200px;
+    margin: 0 auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+  </style>
+    <script>
+      function addToExpression(value) {
+    document.getElementById('input-field').value += value;
+}
+
+function evaluateExpression() {
+    var expression = document.getElementById('input-field').value;
+    try {
+        var result = eval(expression);
+        document.getElementById('input-field').value = result;
+    } catch (error) {
+        document.getElementById('input-field').value = 'Error';
+    }
+}
+
+function clearInput() {
+    document.getElementById('input-field').value = '';
+}
+
+    </script>
+</body>
+</html>
 
