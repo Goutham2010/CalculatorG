@@ -4,7 +4,9 @@
   </head>
   <body>
     <canvas id="gameCanvas"></canvas>
-    
+    <div id="levelDisplay">Level: 1</div>
+    <div id="scoreDisplay">Score: 0</div>
+
   </body>
   <style>
     #gameCanvas {
@@ -146,6 +148,20 @@ const terrainData = generateTerrainData();
 
 // Render the rocky terrain
 renderTerrain(context, terrainData);
+let currentLevel = 1; // Current level the player is on
+let totalScore = 0; // Player's total score
+function completeLevel() {
+  currentLevel++; // Increase the current level
+  totalScore += 100; // Award points for completing the level
+}
+function updateUI() {
+  document.getElementById("levelDisplay").textContent = "Level: " + currentLevel;
+  document.getElementById("scoreDisplay").textContent = "Score: " + totalScore;
+}
+function completeLevelWithinTimeLimit() {
+  currentLevel++;
+  totalScore += 100 + (10 * remainingTime); // Award extra points based on remaining time
+}
 
   </script>
 </html>
