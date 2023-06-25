@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Camera Web App</title>
+    <title>CameraGp</title>
 </head>
 <body>
     <div class="camera-container">
@@ -13,7 +13,7 @@
         </div>
         <canvas id="canvas" style="display: none;"></canvas>
     </div>
-  <style>
+    <style>
     .camera-container {
     display: flex;
     justify-content: center;
@@ -68,9 +68,9 @@
     text-decoration: none;
     font-size: 16px;
 }
-  </style>
-  <script>
-    // Access the video element
+    </style>
+    <script>
+        // Access the video element
 const video = document.getElementById('video');
 
 // Access the canvas element
@@ -155,6 +155,6 @@ window.addEventListener('unload', () => {
     stopCamera();
     downloadLink.style.display = 'none';
 });
-  </script>
+    </script>
 </body>
 </html>
