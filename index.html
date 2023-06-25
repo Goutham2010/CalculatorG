@@ -5,29 +5,29 @@
 </head>
 <body>
     <div class="calculator">
-        <input type="text" id="input-field">
+        <input type="text" id="input-field" readonly>
         <div class="buttons">
+            <button class="operator" onclick="addToExpression('/')">÷</button>
             <button onclick="addToExpression('7')">7</button>
             <button onclick="addToExpression('8')">8</button>
             <button onclick="addToExpression('9')">9</button>
-            <button onclick="addToExpression('/')">/</button>
+            <button class="operator" onclick="addToExpression('*')">x</button>
             <button onclick="addToExpression('4')">4</button>
             <button onclick="addToExpression('5')">5</button>
             <button onclick="addToExpression('6')">6</button>
-            <button onclick="addToExpression('*')">*</button>
+            <button class="operator" onclick="addToExpression('-')">-</button>
             <button onclick="addToExpression('1')">1</button>
             <button onclick="addToExpression('2')">2</button>
             <button onclick="addToExpression('3')">3</button>
-            <button onclick="addToExpression('-')">-</button>
+            <button class="operator" onclick="addToExpression('+')">+</button>
             <button onclick="addToExpression('0')">0</button>
             <button onclick="addToExpression('.')">.</button>
-            <button onclick="evaluateExpression()">=</button>
-            <button onclick="addToExpression('+')">+</button>
-            <button onclick="clearInput()">C</button>
+            <button id="equals-btn" onclick="evaluateExpression()">=</button>
+            <button id="clear-btn" onclick="clearInput()">C</button>
         </div>
     </div>
-  <style>
-.calculator {
+    <style>
+        .calculator {
     width: 300px;
     margin: 0 auto;
     background-color: #1a1a1a;
@@ -87,9 +87,9 @@ button:active {
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
     transform: translateY(2px);
 }
-  </style>
+    </style>
     <script>
-      function addToExpression(value) {
+        function addToExpression(value) {
     document.getElementById('input-field').value += value;
 }
 
@@ -110,4 +110,3 @@ function clearInput() {
     </script>
 </body>
 </html>
-
