@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Web App</title>
+</head>
+<body>
+    <div class="camera-container">
+        <div class="camera">
+            <video id="video" autoplay></video>
+            <button id="record-btn">Record</button>
+            <button id="stop-btn">Stop</button>
+            <a id="download-link" download></a>
+        </div>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+  <style>
+    .camera-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.camera {
+    position: relative;
+}
+
+#video {
+    width: auto;
+    max-width: 100%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+#record-btn, #stop-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#record-btn:disabled, #stop-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+#record-btn:hover, #stop-btn:hover {
+    background-color: #45a049;
+}
+
+#record-btn:active, #stop-btn:active {
+    background-color: #3e8940;
+}
+
+#download-link {
+    display: none;
+    margin-top: 10px;
+    text-align: center;
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 16px;
+}
+  </style>
+  <script>
+    // Access the video element
+const video = document.getElementById('video');
+
+// Access the canvas element
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
+
+// Access the buttons and download link
+const recordButton = document.getElementById('record-btn');
+const stopButton = document.getElementById('stop-btn');
+const downloadLink = document.getElementById('download-link');
+
+// Variable to store the media stream and media recorder
+let mediaStream;
+let mediaRecorder;
+let recordedChunks = [];
+
+// Function to start the camera
+async function startCamera() {
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = mediaStream;
+    } catch (error) {
+        console.error('Error accessing camera:', error);
+    }
+}
+
+// Function to start video recording
+function startRecording() {
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(mediaStream);
+
+    mediaRecorder.addEventListener('dataavailable', event => {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    });
+
+    mediaRecorder.addEventListener('stop', () => {
+        const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+        const videoUrl = URL.createObjectURL(videoBlob);
+        downloadLink.href = videoUrl;
+        downloadLink.style.display = 'block';
+        downloadLink.textContent = 'Download Video';
+    });
+
+    mediaRecorder.start();
+    recordButton.disabled = true;
+    stopButton.disabled = false;
+}
+
+// Function to stop video recording
+function stopRecording() {
+    mediaRecorder.stop();
+    recordButton.disabled = false;
+    stopButton.disabled = true;
+}
+
+// Function to capture a photo
+function capturePhoto() {
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageDataURL = canvas.toDataURL('image/png');
+    // You can send the captured image data to the server or perform any other operations here
+    console.log('Captured photo:', imageDataURL);
+}
+
+// Function to stop the camera
+function stopCamera() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+    }
+}
+
+// Event listeners for the buttons
+recordButton.addEventListener('click', startRecording);
+stopButton.addEventListener('click', stopRecording);
+
+// Start the camera when the page loads
+startCamera();
+
+// Stop the camera and clear the download link when the page is unloaded
+window.addEventListener('unload', () => {
+    stopCamera();
+    downloadLink.style.display = 'none';
+});
+  </script>
+</body>
+</html>
