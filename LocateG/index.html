@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location Info</title>
+</head>
+<body>
+  <header>
+    <h1>Location Info</h1>
+  </header>
+
+  <main>
+    <section id="geo-info">
+      <h2>Geolocation Information</h2>
+      <ul>
+        <li><strong>Latitude:</strong> <span id="latitude"></span></li>
+        <li><strong>Longitude:</strong> <span id="longitude"></span></li>
+        <!-- Add more geolocation data here -->
+      </ul>
+    </section>
+    
+    <!-- Add more sections for other types of location data (e.g., reverse geocoding) -->
+    
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Location Info. All rights reserved.</p>
+  </footer>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+strong {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#latitude,
+#longitude {
+  font-weight: bold;
+  color: #007bff;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #343a40;
+  color: #fff;
+}
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  // Check if geolocation is supported by the browser
+  if ("geolocation" in navigator) {
+    // Get geolocation data
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      
+      // Display geolocation data
+      document.getElementById("latitude").textContent = latitude;
+      document.getElementById("longitude").textContent = longitude;
+      
+      // Add more code here to access and display additional location data
+    });
+  } else {
+    console.log("Geolocation is not available in this browser.");
+  }
+});
+  </script>
+</body>
+</html>
 
