@@ -24,6 +24,7 @@
   <ul>
     <li><strong>Street Address:</strong> <span id="street-address"></span></li>
     <li><strong>City:</strong> <span id="city"></span></li>
+    <li><strong>State:</strong> <span id="state"></span></li>
     <li><strong>Country:</strong> <span id="country"></span></li>
     <!-- Add more address data here -->
   </ul>
@@ -110,20 +111,20 @@ document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("latitude").textContent = latitude;
       document.getElementById("longitude").textContent = longitude;
       
-      // Use OpenCage Geocoding API for reverse geocoding
-      const apiKey = "012dfeb8182e4cd5a4d2270e450447ed";
-      const apiUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}&q=${latitude}+${longitude}&pretty=1`;
+      const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`;
       
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-          const results = data.results[0];
-          const streetAddress = results.components.road || "N/A";
-          const city = results.components.city || "N/A";
-          const country = results.components.country || "N/A";
+          const address = data.address;
+          const streetAddress = address.road || "N/A";
+          const city = address.city || address.town || "N/A";
+          const state = address.state_district || address.state || "N/A";
+          const country = address.country || "N/A";
           
           document.getElementById("street-address").textContent = streetAddress;
           document.getElementById("city").textContent = city;
+          document.getElementById("state").textContent = state; // Add this line
           document.getElementById("country").textContent = country;
         })
         .catch(error => console.error("Error fetching data:", error));
