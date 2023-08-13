@@ -89,6 +89,7 @@ strong {
 #longitude,
 #street-address,
 #city,
+#state,
 #country {
   font-weight: bold;
   color: #007bff;
@@ -119,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const address = data.address;
           const streetAddress = address.road || "N/A";
           const city = address.city || address.town || "N/A";
-          const state = address.state_district || address.state || "N/A";
+          const state = address.state || address.state_district || "N/A";
           const country = address.country || "N/A";
           
           document.getElementById("street-address").textContent = streetAddress;
