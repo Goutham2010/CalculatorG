@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TranslateG</title>
+</head>
+<body>
+    <h1>Language Translator</h1>
+    <select id="languageSelect">
+        <!-- Include a list of supported languages here -->
+    </select>
+    <textarea id="inputText" placeholder="Enter text to translate"></textarea>
+    <button onclick="translateText()">Translate</button>
+    <div id="outputText"></div>
+    <script>
+      const apiKey = 'YOUR_DEEPL_API_KEY';
+const translationEndpoint = 'https://api.deepl.com/v2/translate';
+
+function translateText() {
+    const sourceText = document.getElementById('inputText').value;
+    const targetLanguage = document.getElementById('languageSelect').value;
+
+    fetch(translationEndpoint, {
+        method: 'POST',
+        headers: {
+            'Authorization': `DeepL-Auth-Key ${apiKey}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `text=${sourceText}&target_lang=${targetLanguage}`,
+    })
+    .then(response => response.json())
+    .then(data => {
+        const translatedText = data.translations[0].text;
+        document.getElementById('outputText').innerText = translatedText;
+    })
+    .catch(error => console.error(error));
+}
+    </script>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+textarea {
+    width: 80%;
+    height: 100px;
+}
+
+button {
+    margin-top: 10px;
+}
+  </style>
+</body>
+</html>￼Enter
