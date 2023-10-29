@@ -6,13 +6,11 @@
     <title>Camera Web App</title>
     <style>
         #video-container {
-            margin-top: 50px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 60vh;
-            background-color: #4CAF50;
         }
 
         #video {
@@ -29,7 +27,6 @@
             justify-content: center;
             gap: 20px;
             margin-top: 20px;
-            color: 
         }
     </style>
 </head>
@@ -75,7 +72,7 @@
         recordButton.addEventListener('click', () => {
             startTime = Date.now();
             const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '_').replace('Z', '');
-            mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/mp4' });
+            mediaRecorder = new MediaRecorder(mediaStream);
 
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
@@ -84,7 +81,8 @@
             };
 
             mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+                // Convert to MP4 format
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
