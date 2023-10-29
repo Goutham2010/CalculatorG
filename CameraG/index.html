@@ -7,6 +7,7 @@
     <style>
         #video-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 60vh;
@@ -14,6 +15,11 @@
 
         #video {
             max-width: 100%;
+        }
+
+        #duration {
+            margin-top: 10px;
+            font-weight: bold;
         }
 
         #controls {
@@ -27,6 +33,7 @@
 <body>
     <div id="video-container">
         <video id="video" autoplay playsinline></video>
+        <div id="duration">Duration: 0s</div>
     </div>
     <div id="controls">
         <button id="capture">Capture Photo</button>
@@ -36,11 +43,15 @@
 
     <script>
         const video = document.getElementById('video');
+        const durationDisplay = document.getElementById('duration');
         const captureButton = document.getElementById('capture');
         const recordButton = document.getElementById('record');
         const stopButton = document.getElementById('stop');
 
         let mediaStream;
+        let startTime;
+        let mediaRecorder;
+        let recordedChunks = [];
 
         async function startCamera() {
             try {
@@ -53,10 +64,14 @@
 
         startCamera();
 
-        let mediaRecorder;
-        let recordedChunks = [];
+        function updateDuration() {
+            const elapsedTime = (Date.now() - startTime) / 1000;
+            durationDisplay.textContent = `Duration: ${elapsedTime.toFixed(1)}s`;
+        }
 
         recordButton.addEventListener('click', () => {
+            startTime = Date.now();
+            const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '_').replace('Z', '');
             mediaRecorder = new MediaRecorder(mediaStream);
 
             mediaRecorder.ondataavailable = (event) => {
@@ -66,24 +81,27 @@
             };
 
             mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const blob = new Blob(recordedChunks, { type: 'video/mp4' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'recorded-video.webm';
+                a.download = `video_${timestamp}.mp4`;
                 a.click();
             };
 
             mediaRecorder.start();
+            setInterval(updateDuration, 100);
         });
 
         stopButton.addEventListener('click', () => {
             if (mediaRecorder.state === 'recording') {
                 mediaRecorder.stop();
+                durationDisplay.textContent = 'Duration: 0s';
             }
         });
 
         captureButton.addEventListener('click', () => {
+            const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '_').replace('Z', '');
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -93,7 +111,7 @@
 
             const a = document.createElement('a');
             a.href = dataURL;
-            a.download = 'captured-image.png';
+            a.download = `image_${timestamp}.png`;
             a.click();
         });
     </script>
