@@ -72,7 +72,7 @@
         recordButton.addEventListener('click', () => {
             startTime = Date.now();
             const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '_').replace('Z', '');
-            mediaRecorder = new MediaRecorder(mediaStream);
+            mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/mp4' });
 
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
