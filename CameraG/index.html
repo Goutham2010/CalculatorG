@@ -53,15 +53,6 @@
         let mediaRecorder;
         let recordedChunks = [];
 
-        async function startCamera() {
-            try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                video.srcObject = mediaStream;
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-            }
-        }
-
         startCamera();
 
         function updateDuration() {
@@ -115,6 +106,22 @@
             a.download = `image_${timestamp}.png`;
             a.click();
         });
+        
+        const axios = require('axios'); // Use Axios or the Fetch API
+
+const formData = new FormData();
+formData.append('webm', webmFile); // Replace with your WebM file
+
+axios.post('http://localhost:3000/convert', formData)
+  .then((response) => {
+    console.log(response.data);
+    // Handle the response, which may include a link to the converted MP4 file
+  })
+  .catch((error) => {
+    console.error(error);
+    // Handle errors
+  });
+
     </script>
 </body>
 </html>
